@@ -13,6 +13,7 @@ using JSON
 using JuMP                        
 using LinearAlgebra  
 using LsqFit  
+using OSQP
 using Random           
 using Statistics        
 using StatsPlots 
