@@ -192,7 +192,7 @@ end
 
 function cvm(Sigma)
     n = size(Sigma,1)
-    modelo = Model(Ipopt.Optimizer)
+    modelo = Model(OSQP.Optimizer)
     @variable(modelo, w[1:n])                      
     @objective(modelo, Min, w' * Sigma * w) 
     @constraint(modelo, sum(w) == 1)        
@@ -204,7 +204,7 @@ end
 
 function fe(mu, Sigma, mu_k)
     n = size(Sigma,1)
-    modelo = Model(Ipopt.Optimizer)
+    modelo = Model(OSQP.Optimizer)
     @variable(modelo, w[1:n])     
     @objective(modelo, Min, w' * Sigma * w)  
     @constraint(modelo, sum(w) == 1)  
@@ -218,7 +218,7 @@ function fe(mu, Sigma, mu_k)
 
 function gfe(mu, Sigma, T, ncarteiras = 10)
     n = length(mu) 
-    modelo = Model(Ipopt.Optimizer)
+    modelo = Model(OSQP.Optimizer)
     set_silent(modelo)                                 
     @variable(modelo, w[1:n])                           
     @objective(modelo, Min, w' * Sigma * w)             
@@ -253,7 +253,7 @@ function gfe(mu, Sigma, T, ncarteiras = 10)
 end
 
 function alocar(mu, Sigma, lista, ncarteiras = 10)
-    modelo = Model(Ipopt.Optimizer)
+    modelo = Model(OSQP.Optimizer)
     set_silent(modelo)       
     n = length(mu)                           
     @variable(modelo, w[1:n])                           
