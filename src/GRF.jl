@@ -1,25 +1,22 @@
 module GRF
 
-using ARCHModels       
-using Cbc               
+using ARCHModels                   
 using CSV
 using Dates             
 using DataFrames
 using Distributions 
-using GLM    
+using GLM  
 using HypothesisTests   
 using HTTP
 using Ipopt             
 using JSON
-using JuMP              
-using Juniper          
+using JuMP                        
 using LinearAlgebra  
 using LsqFit  
 using Random           
 using Statistics        
 using StatsPlots 
-using XLSX      
-
+     
 include("modulo01.jl")
 
 # Notebooks interativos 
@@ -28,7 +25,6 @@ include("modulo01.jl")
 #           
 # nbviewer: https://nbviewer.jupyter.org
 # https://github.com/ASaragga/GRF.jl/blob/master/src/Modulo1.1-1.7.ipynb
-
 
 
 end # module
