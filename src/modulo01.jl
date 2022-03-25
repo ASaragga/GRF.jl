@@ -193,10 +193,10 @@ end
 function cvm(Sigma)
     n = size(Sigma,1)
     modelo = Model(OSQP.Optimizer)
-    @variable(modelo, w[1:n])                      
+    @variable(modelo, w[1:n] >= 0)                      
     @objective(modelo, Min, w' * Sigma * w) 
     @constraint(modelo, sum(w) == 1)        
-    @constraint(modelo, w .>= 0)            
+    # @constraint(modelo, w .>= 0)            
     optimize!(modelo)                       
     return value.(w)
 end
