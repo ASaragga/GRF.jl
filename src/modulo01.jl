@@ -230,7 +230,7 @@ function gfe(mu, Sigma, T, ncarteiras = 10)
     var_k = zeros(ncarteiras)
     mu_k = zeros(ncarteiras)
     for i in 0:ncarteiras-1
-        modelo = Model(Ipopt.Optimizer)
+        modelo = Model(OSQP.Optimizer)
         set_silent(modelo)                                  
         @variable(modelo, w[1:n])                           
         @objective(modelo, Min, w' * Sigma * w)             
@@ -266,7 +266,7 @@ function alocar(mu, Sigma, lista, ncarteiras = 10)
     w_k = zeros(n,ncarteiras)
     mu_CVM = mu' * w_CVM
     for i in 0:ncarteiras-1
-        modelo = Model(Ipopt.Optimizer)
+        modelo = Model(OSQP.Optimizer)
         set_silent(modelo)                                  
         @variable(modelo, w[1:n])                           
         @objective(modelo, Min, w' * Sigma * w)             
