@@ -6,6 +6,7 @@ using Dates
 using DataFrames
 using Distributions 
 using GLM  
+using HiGHS
 using HypothesisTests   
 using HTTP
 using Ipopt             
