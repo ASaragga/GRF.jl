@@ -1,7 +1,7 @@
 name = "GRF"
 uuid = "1ecb1645-cdd7-491c-b391-f06610b95cea"
 authors = ["Antonio Saragga Seabra"]
-version = "0.1.7"
+version = "0.1.8"
 
 [deps]
 ARCHModels = "6d3278bc-c23a-5105-85e5-0d57d2bf684f"
