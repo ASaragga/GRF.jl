@@ -11,7 +11,8 @@ using HypothesisTests
 using HTTP
 using Ipopt             
 using JSON
-using JuMP                        
+using JuMP 
+using LaTeXStrings                       
 using LinearAlgebra  
 using LsqFit  
 using OSQP

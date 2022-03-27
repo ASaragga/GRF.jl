@@ -40,7 +40,14 @@ function gfe(mu, Sigma, ncarteiras = 10)
         vark[i] = wk' * Sigma * wk 
     end
     vars = diag(Sigma)
-    fig = plot(vark, muk, xlabel = L"Risco ($\sigma^2$)", ylabel = "Valor Esperado do Retorno", label = "Fronteira Eficiente", xlim = (0, maximum(vars) * 1.1), ylim = (0, maximum(mu)*1.1), framestyle = :box, legend = :bottomright)
+    fig = plot(vark, muk, 
+            xlabel = L"Risco ($\sigma^2$)", 
+            ylabel = "Valor Esperado do Retorno", 
+            label = "Fronteira Eficiente", 
+            xlim = (0, maximum(vars) * 1.1), 
+            ylim = (0, maximum(mu)*1.1), 
+            framestyle = :box, 
+            legend = :bottomright)
     fig = scatter!(vars, mu, label = "Ativos")
     fig = scatter!([vark[1]], [muk[1]], label = "CVM")
     return fig
