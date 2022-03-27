@@ -1,6 +1,6 @@
 function cef(Sigma, mu, muk)  # Carteira efficiente para (muk)
     n = size(Sigma,1)
-    modelo = Model(HiGHS.Optimizer)
+    modelo = Model(Ipopt.Optimizer)
     set_silent(modelo)  
     @variable(modelo, w[1:n])     
     @objective(modelo, Min, w' * Sigma * w)  
@@ -13,7 +13,7 @@ end
 
 function cef(Sigma)   # Carteira variância mínima
     n = size(Sigma,1)
-    modelo = Model(HiGHS.Optimizer)
+    modelo = Model(Ipopt.Optimizer)
     set_silent(modelo)  
     @variable(modelo, w[1:n])                      
     @objective(modelo, Min, w' * Sigma * w) 
