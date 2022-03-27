@@ -18,7 +18,8 @@ using OSQP
 using Random           
 using Statistics        
 using StatsPlots 
-     
+
+include("modulo00.jl")
 include("modulo01.jl")
 
 # Notebooks interativos 
