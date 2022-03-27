@@ -13,7 +13,7 @@ end
 
 function fe(mu, Sigma, muk)
     n = size(Sigma,1)
-    modelo = Model(Ipop.Optimizer)
+    modelo = Model(Ipopt.Optimizer)
     set_silent(modelo)  
     @variable(modelo, w[1:n])     
     @objective(modelo, Min, w' * Sigma * w)  
@@ -54,7 +54,7 @@ function gfe(mu, Sigma, ncarteiras = 10)
 end
 
 function alocar(mu, Sigma, lista, ncarteiras = 10)
-    modelo = Model(Ipop.Optimizer)
+    modelo = Model(Ipopt.Optimizer)
     set_silent(modelo)       
     n = length(mu)                           
     @variable(modelo, w[1:n])                           
