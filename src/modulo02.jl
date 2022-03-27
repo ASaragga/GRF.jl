@@ -1,3 +1,5 @@
+cvm = cef
+
 function cef(Sigma, mu, muk)  # Carteira efficiente para (muk)
     n = size(Sigma,1)
     modelo = Model(Ipopt.Optimizer)
