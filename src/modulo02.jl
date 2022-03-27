@@ -1,6 +1,6 @@
 function cvm(Sigma)
     n = size(Sigma,1)
-    modelo = Model(OSQP.Optimizer)
+    modelo = Model(Ipopt.Optimizer)
     set_silent(modelo)  
     @variable(modelo, w[1:n])                      
     @objective(modelo, Min, w' * Sigma * w) 
@@ -13,7 +13,7 @@ end
 
 function fe(mu, Sigma, muk)
     n = size(Sigma,1)
-    modelo = Model(OSQP.Optimizer)
+    modelo = Model(Ipop.Optimizer)
     set_silent(modelo)  
     @variable(modelo, w[1:n])     
     @objective(modelo, Min, w' * Sigma * w)  
@@ -41,8 +41,8 @@ function gfe(mu, Sigma, ncarteiras = 10)
     end
     vars = diag(Sigma)
     fig = plot(vark, muk, 
-            xlabel = L"Risco ($\sigma^2$)", 
-            ylabel = "Valor Esperado do Retorno", 
+            xlabel = "var[r]", 
+            ylabel = L"\mathbb{E}[r]", 
             label = "Fronteira Eficiente", 
             xlim = (0, maximum(vars) * 1.1), 
             ylim = (0, maximum(mu)*1.1), 
@@ -54,7 +54,7 @@ function gfe(mu, Sigma, ncarteiras = 10)
 end
 
 function alocar(mu, Sigma, lista, ncarteiras = 10)
-    modelo = Model(OSQP.Optimizer)
+    modelo = Model(Ipop.Optimizer)
     set_silent(modelo)       
     n = length(mu)                           
     @variable(modelo, w[1:n])                           
@@ -67,7 +67,7 @@ function alocar(mu, Sigma, lista, ncarteiras = 10)
     w_k = zeros(n,ncarteiras)
     mu_CVM = mu' * w_CVM
     for i in 0:ncarteiras-1
-        modelo = Model(OSQP.Optimizer)
+        modelo = Model(Ipopt.Optimizer)
         set_silent(modelo)                                  
         @variable(modelo, w[1:n])                           
         @objective(modelo, Min, w' * Sigma * w)             
