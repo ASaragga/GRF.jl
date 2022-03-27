@@ -193,6 +193,7 @@ end
 function cvm(Sigma)
     n = size(Sigma,1)
     modelo = Model(OSQP.Optimizer)
+    set_silent(modelo)  
     @variable(modelo, w[1:n])                      
     @objective(modelo, Min, w' * Sigma * w) 
     @constraint(modelo, sum(w) == 1)        
@@ -202,53 +203,39 @@ function cvm(Sigma)
 end
 
 
-function fe(mu, Sigma, mu_k)
+function fe(mu, Sigma, muk)
     n = size(Sigma,1)
     modelo = Model(OSQP.Optimizer)
+    set_silent(modelo)  
     @variable(modelo, w[1:n])     
     @objective(modelo, Min, w' * Sigma * w)  
     @constraint(modelo, sum(w) == 1)  
     @constraint(modelo, w .>= 0)      
-    @constraint(modelo, mu' * w >= mu_k)
+    @constraint(modelo, mu' * w >= muk)
     optimize!(modelo)                   
     return value.(w)                                 
   end
 
 
 
-function gfe(mu, Sigma, T, ncarteiras = 10)
-    n = size(Sigma,1) 
-    modelo = Model(OSQP.Optimizer)
-    set_silent(modelo)                                 
-    @variable(modelo, w[1:n])                           
-    @objective(modelo, Min, w' * Sigma * w)             
-    @constraint(modelo, sum(w) == 1)                    
-    @constraint(modelo, w .>= 0)                        
-    optimize!(modelo)                                   
-    w_CVM = value.(w)  
-    mu_CVM = mu' * w_CVM                                 
-    var_k = zeros(ncarteiras)
-    mu_k = zeros(ncarteiras)
-    for i in 0:ncarteiras-1
-        modelo = Model(OSQP.Optimizer)
-        set_silent(modelo)                                  
-        @variable(modelo, w[1:n])                           
-        @objective(modelo, Min, w' * Sigma * w)             
-        @constraint(modelo, sum(w) == 1)                    
-        @constraint(modelo, w .>= 0)                        
-        mu_max = maximum(mu)
-        incremento = (mu_max-mu_CVM)/(ncarteiras-1)
-        mu_k[i+1] = mu_CVM + incremento * i
-        @constraint(modelo, mu' * w >= mu_k[i+1])                
-        optimize!(modelo)                                  
-        w_k = value.(w)   
-        var_k[i+1] = T * w_k' * Sigma * w_k 
+function gfe(mu, Sigma, ncarteiras = 10) 
+    muk = zeros(ncarteiras) 
+    vark = zeros(ncarteiras)                        
+    mu_max = maximum(mu) 
+
+    w_cvm = cvm(Sigma) 
+    muk[1] = mu' * w_cvm  # MVP: mu
+    vark[1] = w_cvm' * Sigma * w_cvm  # MVP: sigma^2
+    inc = (mu_max-muk[1])/(ncarteiras-1)                              
+    for i in 2:ncarteiras
+        muk[i] = muk[1] + inc * (i-1)
+        wk = fe(mu, Sigma, muk[i])                               
+        vark[i] = wk' * Sigma * wk 
     end
-    avar = T * diag(Sigma)
-    fig = plot(var_k,mu_k, xlabel = "Risco da Carteira", ylabel = "Valor Esperado do Retorno da Carteira", label = "Fronteira Eficiente", xlim = (0, maximum(avar) * 1.1), ylim = (0, maximum(mu)*1.1), framestyle = :box, legend = :bottomright)
-    fig = scatter!(avar, mu, label = "Ativos")
-    var_CVM = T * w_CVM' * Sigma * w_CVM
-    fig = scatter!([var_CVM], [mu_CVM], label = "Carteira variância minima")
+    vars = diag(Sigma)
+    fig = plot(vark, muk, xlabel = L"Risco ($\sigma^2$)", ylabel = "Valor Esperado do Retorno", label = "Fronteira Eficiente", xlim = (0, maximum(vars) * 1.1), ylim = (0, maximum(mu)*1.1), framestyle = :box, legend = :bottomright)
+    fig = scatter!(vars, mu, label = "Ativos")
+    fig = scatter!([vark[1]], [muk[1]], label = "Carteira variância minima")
     return fig
 end
 
