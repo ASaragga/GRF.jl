@@ -44,7 +44,7 @@ function gfe(Sigma, mu, ncarteiras = 10)
     dpfe = sqrt.(252 * fef(Sigma, mu, ncarteiras)[2])
     mufe = fef(Sigma, mu, ncarteiras)[3]
     DPs = sqrt.(252 * diag(Sigma))
-    fig = plot(dpfe, mufe, xlabel = "DP[r] anualisado", ylabel = L"\mathbb{E}[r]", label = "Fronteira Eficiente", xlim = (0, maximum(DPs) * 1.1), ylim = (0, maximum(mu)*1.1), framestyle = :box, legend = :bottomright)
+    fig = plot(dpfe, mufe, xlabel = "DP[r] Anualizado", ylabel = L"\mathbb{E}[r]", label = "Fronteira Eficiente", xlim = (0, maximum(DPs) * 1.1), ylim = (0, maximum(mu)*1.1), framestyle = :box, legend = :bottomright)
     fig = scatter!(DPs, mu, label = "Ativos")
     fig = scatter!([dpfe[1]], [mufe[1]], label = "CVM")
     return fig

@@ -22,8 +22,6 @@ beta = [coef(lm(term(i) ~ term(:SP500), DJ30r))[2] for i in names(DJ30r[!, Not([
 rf = 0
 rm = 0.055
 mu = rf .+ beta * (rm - rf);  # Vetor de retornos esperados de acordo com CAPM
-println(names(DJ30r[!, Not([:SP500, :Datas])]))
-println(sqrt.(diag(Sigma)))
 
 
 Sigma = cov(carteira);    # Matriz de covariâncias 
