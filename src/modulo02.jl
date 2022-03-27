@@ -41,21 +41,21 @@ function fef(Sigma, mu, ncarteiras = 10) # Fronteira eficiente
 end
 
 function gfe(Sigma, mu, ncarteiras = 10) 
-    vark = fef(Sigma, mu, ncarteiras)[2]
-    muk = fef(Sigma, mu, ncarteiras)[3]
-    vars = diag(Sigma)
-    fig = plot(vark, muk, xlabel = "var[r]", ylabel = L"\mathbb{E}[r]", label = "Fronteira Eficiente", xlim = (0, maximum(vars) * 1.1), ylim = (0, maximum(mu)*1.1), framestyle = :box, legend = :bottomright)
-    fig = scatter!(vars, mu, label = "Ativos")
-    fig = scatter!([vark[1]], [muk[1]], label = "CVM")
+    dpfe = sqrt.(252 * fef(Sigma, mu, ncarteiras)[2])
+    mufe = fef(Sigma, mu, ncarteiras)[3]
+    DPs = sqrt.(252 * diag(Sigma))
+    fig = plot(dpfe, mufe, xlabel = "DP[r] anualisado", ylabel = L"\mathbb{E}[r]", label = "Fronteira Eficiente", xlim = (0, maximum(DPs) * 1.1), ylim = (0, maximum(mu)*1.1), framestyle = :box, legend = :bottomright)
+    fig = scatter!(DPs, mu, label = "Ativos")
+    fig = scatter!([dpfe[1]], [mufe[1]], label = "CVM")
     return fig
 end
 
 function alocar(Sigma, mu, lista, ncarteiras = 10)
     wk = fef(Sigma, mu, ncarteiras)[1]
     ticklabel = "P" .* string.(collect(1:ncarteiras))
-    ticklabel[1] = "MVP"
-    ticklabel[ncarteiras] = "MRP"
-    fig = groupedbar(wk', bar_position = :stack, bar_width=1.0, xlabel = "Portfolios", xticks=(1:ncarteiras, ticklabel), ylabel = "Weigths", label = permutedims(String.(lista)), legend = :outertopright, framestyle = :box)
+    ticklabel[1] = "CVM"
+    ticklabel[ncarteiras] = "CRM"
+    fig = groupedbar(wk', bar_position = :stack, bar_width=1.0, xlabel = "Carteiras", xticks=(1:ncarteiras, ticklabel), ylabel = "Pesos", label = permutedims(String.(lista)), legend = :outertopright, framestyle = :box)
     return fig
 end
 
