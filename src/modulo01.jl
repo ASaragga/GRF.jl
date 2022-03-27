@@ -222,7 +222,6 @@ function gfe(mu, Sigma, ncarteiras = 10)
     muk = zeros(ncarteiras) 
     vark = zeros(ncarteiras)                        
     mu_max = maximum(mu) 
-
     w_cvm = cvm(Sigma) 
     muk[1] = mu' * w_cvm  # MVP: mu
     vark[1] = w_cvm' * Sigma * w_cvm  # MVP: sigma^2
@@ -235,7 +234,7 @@ function gfe(mu, Sigma, ncarteiras = 10)
     vars = diag(Sigma)
     fig = plot(vark, muk, xlabel = L"Risco ($\sigma^2$)", ylabel = "Valor Esperado do Retorno", label = "Fronteira Eficiente", xlim = (0, maximum(vars) * 1.1), ylim = (0, maximum(mu)*1.1), framestyle = :box, legend = :bottomright)
     fig = scatter!(vars, mu, label = "Ativos")
-    fig = scatter!([vark[1]], [muk[1]], label = "Carteira variância minima")
+    fig = scatter!([vark[1]], [muk[1]], label = "CVM")
     return fig
 end
 
