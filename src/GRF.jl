@@ -20,7 +20,8 @@ using Statistics
 using StatsPlots 
 
 include("modulo00.jl")
-include("modulo01.jl")
+include("modulo02.jl")
+include("modulo03.jl")
 
 # Notebooks interativos 
 # binder: https://mybinder.org 
