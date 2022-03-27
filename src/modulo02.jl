@@ -51,11 +51,11 @@ function gfe(Sigma, mu, ncarteiras = 10)
 end
 
 function alocar(Sigma, mu, lista, ncarteiras = 10)
-    wk = fe(Sigma, mu, ncarteiras)[1]
+    wk = fef(Sigma, mu, ncarteiras)[1]
     ticklabel = "P" .* string.(collect(1:ncarteiras))
-    ticklabel[1] = "CVM"
-    ticklabel[ncarteiras] = "CRM"
-    fig = groupedbar(wk', bar_position = :stack, bar_width=1.0, xlabel = "Carteiras", xticks=(1:ncarteiras, ticklabel), ylabel = "Pesos", label = permutedims(String.(lista)), legend = :bottomright, framestyle = :box)
+    ticklabel[1] = "MVP"
+    ticklabel[ncarteiras] = "MRP"
+    fig = groupedbar(wk', bar_position = :stack, bar_width=1.0, xlabel = "Portfolios", xticks=(1:ncarteiras, ticklabel), ylabel = "Weigths", label = permutedims(String.(lista)), legend = :outertopright, framestyle = :box)
     return fig
 end
 
