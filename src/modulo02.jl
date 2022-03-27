@@ -55,7 +55,7 @@ function alocar(Sigma, mu, lista, ncarteiras = 10)
     ticklabel = "P" .* string.(collect(1:ncarteiras))
     ticklabel[1] = "CVM"
     ticklabel[ncarteiras] = "CRM"
-    fig = groupedbar(wk', bar_position = :stack, bar_width=1.0, xlabel = "Carteiras", xticks=(1:ncarteiras, ticklabel), ylabel = "Pesos", label = permutedims(String.(lista)), legend = :outertopright, legendfontsize = 6, framestyle = :box)
+    fig = groupedbar(wk', bar_position = :stack, bar_width=1.0, xlabel = "Carteiras", xticks=(1:ncarteiras, ticklabel), ylabel = "Pesos", label = permutedims(String.(lista)), legend = :outertopright, legendfontsize = 7, framestyle = :box)
     return fig
 end
 
