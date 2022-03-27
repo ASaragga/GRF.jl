@@ -1,6 +1,6 @@
 function cvm(Sigma)
     n = size(Sigma,1)
-    modelo = Model(Ipopt.Optimizer)
+    modelo = Model(HiGHS.Optimizer)
     set_silent(modelo)  
     @variable(modelo, w[1:n])                      
     @objective(modelo, Min, w' * Sigma * w) 
@@ -11,9 +11,9 @@ function cvm(Sigma)
 end
 
 
-function fe(mu, Sigma, muk)
+function ce(mu, Sigma, muk)  # Carteira efficiente para (muk)
     n = size(Sigma,1)
-    modelo = Model(Ipopt.Optimizer)
+    modelo = Model(HiGHS.Optimizer)
     set_silent(modelo)  
     @variable(modelo, w[1:n])     
     @objective(modelo, Min, w' * Sigma * w)  
@@ -24,21 +24,26 @@ function fe(mu, Sigma, muk)
     return value.(w)                                 
   end
 
-
-
-function gfe(mu, Sigma, ncarteiras = 10) 
+function fe(mu, Sigma, ncarteiras = 10) # Fronteira eficiente
     muk = zeros(ncarteiras) 
-    vark = zeros(ncarteiras)                        
+    vark = zeros(ncarteiras)
+    wk = zeros(size(Sigma,1), ncarteiras)
     mu_max = maximum(mu) 
-    w_cvm = cvm(Sigma) 
-    muk[1] = mu' * w_cvm  # MVP: mu
-    vark[1] = w_cvm' * Sigma * w_cvm  # MVP: sigma^2
+    wk[:,1] = cvm(Sigma) 
+    muk[1] = mu' * wk[:,1]  # CVM: mu
+    vark[1] = wk[:,1]' * Sigma * wk[:,1]  # CVM: sigma^2
     inc = (mu_max-muk[1])/(ncarteiras-1)                              
     for i in 2:ncarteiras
         muk[i] = muk[1] + inc * (i-1)
-        wk = fe(mu, Sigma, muk[i])                               
-        vark[i] = wk' * Sigma * wk 
+        wk[:,i] = ce(mu, Sigma, muk[i])                               
+        vark[i] = wk[:,i]' * Sigma * wk[:,i]
     end
+    return wk, vark, muk
+end
+
+function gfe(mu, Sigma, ncarteiras = 10) 
+    vark = fe(mu, Sigma, ncarteiras)[2]
+    muk = fe(mu, Sigma, ncarteiras)[3]
     vars = diag(Sigma)
     fig = plot(vark, muk, 
             xlabel = "var[r]", 
@@ -54,36 +59,11 @@ function gfe(mu, Sigma, ncarteiras = 10)
 end
 
 function alocar(mu, Sigma, lista, ncarteiras = 10)
-    modelo = Model(Ipopt.Optimizer)
-    set_silent(modelo)       
-    n = length(mu)                           
-    @variable(modelo, w[1:n])                           
-    @objective(modelo, Min, w' * Sigma * w)             
-    @constraint(modelo, sum(w) == 1)                    
-    @constraint(modelo, w .>= 0)                        
-    optimize!(modelo)                                   
-    w_CVM = value.(w)                                   
-    mu_k = zeros(ncarteiras)
-    w_k = zeros(n,ncarteiras)
-    mu_CVM = mu' * w_CVM
-    for i in 0:ncarteiras-1
-        modelo = Model(Ipopt.Optimizer)
-        set_silent(modelo)                                  
-        @variable(modelo, w[1:n])                           
-        @objective(modelo, Min, w' * Sigma * w)             
-        @constraint(modelo, sum(w) == 1)                    
-        @constraint(modelo, w .>= 0)                        
-        mu_max = maximum(mu)
-        incremento = (mu_max-mu_CVM)/(ncarteiras-1)
-        mu_k[i+1] = mu_CVM + incremento * i
-        @constraint(modelo, mu' * w >= mu_k[i+1])                
-        optimize!(modelo)                                  
-        w_k[:,i+1] = value.(w)   
-    end
+    wk = fe(mu, Sigma, ncarteiras)[1]
     ticklabel = "P" .* string.(collect(1:ncarteiras))
     ticklabel[1] = "CVM"
     ticklabel[ncarteiras] = "CRM"
-    fig = groupedbar(w_k', bar_position = :stack, bar_width=1.0, xlabel = "Carteiras", xticks=(1:ncarteiras, ticklabel), ylabel = "Pesos", label = permutedims(String.(lista)), legend = :bottomright, framestyle = :box)
+    fig = groupedbar(wk', bar_position = :stack, bar_width=1.0, xlabel = "Carteiras", xticks=(1:ncarteiras, ticklabel), ylabel = "Pesos", label = permutedims(String.(lista)), legend = :bottomright, framestyle = :box)
     return fig
 end
 
