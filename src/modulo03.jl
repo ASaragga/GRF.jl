@@ -4,12 +4,12 @@ function ETL(retornos, alfa, V)
     excedimentos = 0
     n_excedimentos = 0
     for i in 1:nobs
-        if retornos[i] <= corte
+        if retornos[i] < corte
             excedimentos += retornos[i]
             n_excedimentos += 1
         end
     end
-    return - (excedimentos/n_excedimentos - mean(retornos)) * V
+    return - (excedimentos/n_excedimentos) * V
 end
 
 
