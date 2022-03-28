@@ -41,8 +41,8 @@ function fef(Sigma, mu, ncarteiras = 10) # Fronteira eficiente
 end
 
 function gfe(Sigma, mu, ncarteiras = 10) 
-    dpfe = sqrt.(252 * fef(Sigma, mu, ncarteiras)[2])
-    mufe = fef(Sigma, mu, ncarteiras)[3]
+    (wk, varfe, mufe) = fef(Sigma, mu, ncarteiras)
+    dpfe = sqrt.(252 * varfe)
     DPs = sqrt.(252 * diag(Sigma))
     fig = plot(dpfe, mufe, xlabel = "DP[r] Anualizado", ylabel = L"\mathbb{E}[r]", label = "Fronteira Eficiente", xlim = (0, maximum(DPs) * 1.1), ylim = (0, maximum(mu)*1.1), framestyle = :box, legend = :bottomright)
     fig = scatter!(DPs, mu, label = "Ativos")
