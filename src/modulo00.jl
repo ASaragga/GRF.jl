@@ -92,7 +92,7 @@ function yahoo(symbol, date1 = Date(1900,1,1), date2 = Date(Dates.now()), interv
             AdjClose = convert(Vector{Union{Missing, Float64}},a),
             # Volume = convert(Vector{Int64},values["volume"])
         )
-    
+        
         DataFrames.rename!(new,[:Data, Symbol(symb)])
         #DataFrames.deleterows!(new, isnothing.(new).Close)
         if i == 1
@@ -101,6 +101,7 @@ function yahoo(symbol, date1 = Date(1900,1,1), date2 = Date(Dates.now()), interv
             old = outerjoin(old, new, on = :Data)
         end
     end
+    println("\n")
     return old
 end
 yahoo(s::Vector{Symbol}, date1, date2, interval) = yahoo(String.(s), date1, date2, interval)
