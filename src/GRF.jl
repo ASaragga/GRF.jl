@@ -6,7 +6,6 @@ using Dates
 using DataFrames
 using Distributions 
 using GLM  
-using HiGHS
 using HypothesisTests   
 using HTTP
 using Ipopt             
@@ -15,7 +14,6 @@ using JuMP
 using LaTeXStrings                       
 using LinearAlgebra  
 using LsqFit  
-using OSQP
 using Random           
 using Statistics        
 using StatsPlots 
