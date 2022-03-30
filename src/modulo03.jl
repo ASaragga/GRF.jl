@@ -16,6 +16,19 @@ end
 
 
 # Abordagem Empírica
+""" 
+    VaR(retornos, alfa, V)  
+
+Cálcula o Valor-em-Risco (VaR)
+""" 
+VaR(retornos,alfa,V) = -quantile(retornos,alfa) * V
+
+
+""" 
+    ETL(retornos, alfa, V)  
+
+Cálcula a Perda Esperada na Cauda (ETL)
+""" 
 function ETL(retornos, alfa, V)
     nobs = length(retornos)
     corte = quantile(retornos, alfa)
