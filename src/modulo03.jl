@@ -3,7 +3,11 @@
     EWMA(retornos, lambda)  
 
 Calcula médias móveis exponencialmente ponderadas
-""" 
+
+## Argumentos
+* `retornos`: retornos da carteira
+* `lambda`: parâmetro de alisamento exponencial
+"""
 function EWMA(retornos, lambda)
     m = length(retornos)
     media = mean(retornos)                 
@@ -19,16 +23,26 @@ end
 """ 
     VaR(retornos, alfa, V)  
 
-Cálcula o Valor-em-Risco (VaR)
-""" 
+Calcula o Valor-em-Risco (VaR)
+
+## Argumentos
+* `retornos`: retornos da carteira
+* `alfa`: nível de significância
+* `V`: valor da carteira
+"""
 VaR(retornos,alfa,V) = -quantile(retornos,alfa) * V
 
 
 """ 
     ETL(retornos, alfa, V)  
 
-Cálcula a Perda Esperada na Cauda (ETL)
-""" 
+Calcula a Perda Esperada na Cauda (ETL)
+
+## Argumentos
+* `retornos`: retornos da carteira
+* `alfa`: nível de significância
+* `V`: valor da carteira
+"""
 function ETL(retornos, alfa, V)
     nobs = length(retornos)
     corte = quantile(retornos, alfa)
