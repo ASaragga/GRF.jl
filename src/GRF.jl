@@ -18,8 +18,7 @@ using Random
 using Statistics        
 using StatsPlots
 
-export yahoo
-export retornos
+export yahoo, retornos, Dates
 export SP500n
 
 include("modulo00.jl")
