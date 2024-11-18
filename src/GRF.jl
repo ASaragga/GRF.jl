@@ -20,6 +20,7 @@ using StatsPlots
 
 export yahoo
 export retornos
+export SP500n
 
 include("modulo00.jl")
 include("modulo02.jl")
