@@ -16,7 +16,10 @@ using LinearAlgebra
 using LsqFit  
 using Random           
 using Statistics        
-using StatsPlots 
+using StatsPlots
+
+export yahoo
+export retornos
 
 include("modulo00.jl")
 include("modulo02.jl")
