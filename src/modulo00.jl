@@ -69,7 +69,7 @@ function yahoo(symbol, date1 = Date(1900,1,1), date2 = Date(Dates.now()), interv
     from = string(round(Int64, datetime2unix(date1)))
     to = string(round(Int64, datetime2unix(date2)))
     host = rand(["query1", "query2"])
-    print("Concluído:")
+    print("Downloaded:")
     for i in 1:nsymb
         if nsymb == 1 && (isa(symbol, String) == true || isa(symbol, Symbol) == true) 
             symb = String(symbol)
