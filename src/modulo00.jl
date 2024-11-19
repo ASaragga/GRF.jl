@@ -84,7 +84,7 @@ function yahoo(symbol, date1 = Date(1900,1,1), date2 = Date(Dates.now()), interv
             println("[",symb,"]")
             continue
         end
-        println(" ", sym)
+        println(" ", symb)
         body = JSON.parse(String(response.body))["chart"]["result"][1]   
         # values = body["indicators"]["quote"][1]
         a = replace!(body["indicators"]["adjclose"][1]["adjclose"], nothing => missing)
