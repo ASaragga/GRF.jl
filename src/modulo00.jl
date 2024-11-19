@@ -76,13 +76,15 @@ function yahoo(symbol, date1 = Date(1900,1,1), date2 = Date(Dates.now()), interv
         else
             symb = String(symbol[i])
         end
-        print(" ", symb)
         url = "https://$host.finance.yahoo.com/v7/finance/chart/$symb?&interval=$interval&period1=$from&period2=$to"
         try
             response = HTTP.get(url, cookies = true)
         catch err
-            println(err)
+            show(err)
+            println("[",symb,"]")
+            continue
         end
+        println(" ", sym)
         body = JSON.parse(String(response.body))["chart"]["result"][1]   
         # values = body["indicators"]["quote"][1]
         a = replace!(body["indicators"]["adjclose"][1]["adjclose"], nothing => missing)
